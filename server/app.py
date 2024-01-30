@@ -1,7 +1,7 @@
 # server/app.py
 #!/usr/bin/env python3
 
-from flask import Flask, make_response
+from flask import Flask, make_response, jsonify
 from flask_migrate import Migrate
 
 from models import db, Earthquake
@@ -20,7 +20,27 @@ def index():
     body = {'message': 'Flask SQLAlchemy Lab 1'}
     return make_response(body, 200)
 
-# Add views here
+# @app.route('/earthquakes/<int:id>')
+# def get_earthquake_by_id(id):
+#     # grab an eq from the db
+#     eq = Earthquake.query.filter(Earthquake.id == id).first()
+#     if eq:
+#         # serialize the eq
+#         data = eq.to_dict()
+#         # return a response
+#         return data, 200
+#     else:
+#         return {'message': f'Earthquake {id} not found.'}, 404
+
+# refactor
+@app.route('/earthquakes/<int:id>')
+def get_earthquake_by_id(id):
+    eq = Earthquake.query.filter(Earthquake.id == id).first()
+
+    if eq is None:
+        return {'message': f'Earthquake {id} not found.'}, 404
+    else:
+        return eq.to_dict(), 200
 
 
 if __name__ == '__main__':
