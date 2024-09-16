@@ -7,3 +7,17 @@ metadata = MetaData()
 db = SQLAlchemy(metadata=metadata)
 
 # Add models here
+class Earthquake(db.Model, SerializerMixin):
+    __tablename__ = 'earthquakes'
+
+    id = db.Column(db.Integer, primary_key=True)
+    magnitude = db.Column(db.Float)
+    location = db.Column(db.String)
+    year = db.Column(db.Integer)
+
+    # SerializerMixin adds a to_dict() method for us
+    # def to_dict(self):
+    #     return {}
+
+    def __repr__(self) -> str:
+        return f"<Earthquake {self.id}, {self.magnitude}, {self.location}, {self.year}>"
